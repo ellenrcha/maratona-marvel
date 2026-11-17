@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maratona Marvel · Doomsday</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&display=swap">
+<style>
+:root{--bg:#090b0a;--card:#131715;--tx:#e9efe9;--mu:#8a968d;--bd:#243029;--gl:#38d27a;--gold:#e0c066;--ra:#ff4655;--vb:#43c77c;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.4;background:radial-gradient(ellipse at 50% -10%,#14402a 0%,rgba(20,64,42,0) 55%),var(--bg);background-attachment:fixed;min-height:100vh}
+main{max-width:640px;margin:0 auto;padding:22px 16px 40px}
+.hero{text-align:center;margin-bottom:18px}
+.eyebrow{font-family:Cinzel,Georgia,serif;letter-spacing:.5em;font-size:.8rem;color:var(--gold);margin:0}
+h1{font-family:Cinzel,Georgia,serif;font-weight:800;font-size:clamp(2rem,10vw,3.2rem);letter-spacing:.08em;margin:2px 0 4px;background:linear-gradient(180deg,#f4f7f4,#9fb0a5 60%,#6f7f75);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 30px rgba(56,210,122,.35)}
+.sub{color:var(--mu);font-size:.85rem;margin:0}
+.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0 4px}
+.cd div{background:rgba(19,23,21,.85);border:1px solid var(--bd);border-radius:12px;padding:10px 4px;text-align:center;box-shadow:0 0 18px rgba(56,210,122,.08)}
+.cd b{display:block;font-family:Cinzel,Georgia,serif;font-size:1.7rem;color:var(--gl);text-shadow:0 0 12px rgba(56,210,122,.5)}
+.cd span{font-size:.65rem;letter-spacing:.15em;color:var(--mu);text-transform:uppercase}
+.cdn{text-align:center;font-size:.8rem;color:var(--mu);margin:0 0 18px}
+.row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.nm{width:96px;font:inherit;font-weight:600;font-size:.9rem;background:transparent;color:var(--tx);border:0;border-bottom:2px solid var(--k);padding:2px 0;border-radius:0}
+.row.a{--k:var(--ra)}.row.b{--k:var(--vb)}
+.bar{flex:1;height:10px;background:#1c2420;border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--k);box-shadow:0 0 10px var(--k);transition:width .3s}
+.row span{font-size:.8rem;color:var(--mu);min-width:42px;text-align:right}
+#note{font-size:.8rem;color:var(--mu);margin:8px 0 0}
+h2{font-family:Cinzel,Georgia,serif;font-size:.8rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin:22px 0 8px}
+.wrap{overflow-x:auto;background:var(--card);border:1px solid var(--bd);border-radius:12px}
+table{width:100%;border-collapse:collapse}
+td{padding:11px 8px;border-bottom:1px solid var(--bd);font-size:.95rem}
+tr:last-child td{border-bottom:0}
+td.c{width:36px;text-align:center}
+td.y{width:48px;text-align:right;color:var(--mu);font-size:.85rem;padding-right:12px}
+tr.done{background:linear-gradient(90deg,rgba(224,192,102,.12),rgba(224,192,102,0))}
+tr.done td.t{text-decoration:line-through;color:var(--mu)}
+tr.done td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
+input[type=checkbox]{-webkit-appearance:none;appearance:none;width:24px;height:24px;margin:0;border-radius:6px;border:2px solid var(--k);background:transparent;cursor:pointer;vertical-align:middle;position:relative}
+input[type=checkbox]:checked{background:var(--k);box-shadow:0 0 10px var(--k)}
+input[type=checkbox]:checked::after{content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.ka{--k:var(--ra)}.kb{--k:var(--vb)}
+.goal{margin-top:22px;padding:14px;border:1px dashed var(--gl);border-radius:12px;font-size:.9rem;text-align:center;color:var(--gl)}
+.sync textarea{width:100%;box-sizing:border-box;background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:10px;font:inherit;font-size:.85rem}
+.btns{display:flex;gap:8px;margin-top:8px}
+.btns button{flex:1;padding:12px 8px;border-radius:10px;border:1px solid var(--gl);background:rgba(56,210,122,.1);color:var(--gl);font:inherit;font-weight:600;font-size:.85rem;cursor:pointer}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<main>
+  <div class="hero">
+    <p class="eyebrow">VINGADORES</p>
+    <h1>DOOMSDAY</h1>
+    <p class="sub">Maratona Marvel · cada uma marca a sua caixinha</p>
+  </div>
+  <div class="cd">
+    <div><b id="d">--</b><span>dias</span></div>
+    <div><b id="h">--</b><span>horas</span></div>
+    <div><b id="m">--</b><span>min</span></div>
+    <div><b id="s">--</b><span>seg</span></div>
+  </div>
+  <p class="cdn" id="cdn">Sessão marcada: 19/12/2026</p>
+  <div class="row a"><input class="nm" id="na" maxlength="14" value="Pessoa 1"><div class="bar"><i id="fa"></i></div><span id="pa">0/0</span></div>
+  <div class="row b"><input class="nm" id="nb" maxlength="14" value="Pessoa 2"><div class="bar"><i id="fb"></i></div><span id="pb">0/0</span></div>
+  <p id="note"></p>
+  <div id="list"></div>
+  <div class="goal">⚡ Meta: 100% antes de Doomsday. Toque no nome para trocá-lo.</div>
+</main>
+<script>
+/* ====== COLE AQUI A CONFIGURAÇÃO DO SEU FIREBASE (troque tudo entre as chaves) ====== */
+var firebaseConfig = {
+  apiKey: "COLE_AQUI",
+  authDomain: "COLE_AQUI",
+  databaseURL: "COLE_AQUI",
+  projectId: "COLE_AQUI",
+  storageBucket: "COLE_AQUI",
+  messagingSenderId: "COLE_AQUI",
+  appId: "COLE_AQUI"
+};
+/* ================================================================================== */
+
+var PHASES=[
+["Ordem para assistir",[["X-Men",2000],["X-Men 2",2003],["Capitão América: O Primeiro Vingador",2011],["Os Vingadores",2012],["Vingadores: Guerra Infinita",2018],["Vingadores: Ultimato",2019],["Loki (série)",2021],["WandaVision (série)",2021],["Shang-Chi e a Lenda dos Dez Anéis",2021],["Homem-Aranha: Sem Volta para Casa",2021],["Doutor Estranho no Multiverso da Loucura",2022],["Pantera Negra: Wakanda para Sempre",2022],["Deadpool & Wolverine",2024],["Capitão América: Admirável Mundo Novo",2025],["Thunderbolts*",2025],["Quarteto Fantástico: Primeiros Passos",2025],["VisionQuest (série)",2026]]]
+];
+var movies=[],done={},fb=null,ready=false,prevBoth={},idx=0;
+PHASES.forEach(function(p){p[1].forEach(function(m){idx++;movies.push({id:"f"+(idx<10?"0":"")+idx,n:idx,name:m[0],year:m[1],phase:p[0]});});});
+var total=movies.length;
+function $(i){return document.getElementById(i);}
+function note(t){$("note").textContent=t;}
+
+function boom(){
+  var c=$("fx"),x=c.getContext("2d");c.width=innerWidth;c.height=innerHeight;
+  var cols=["#ff4655","#43c77c","#e0c066","#ffffff"],P=[],i;
+  for(i=0;i<150;i++)P.push({x:c.width/2,y:c.height*0.4,vx:(Math.random()-.5)*15,vy:Math.random()*-13-2,s:5+Math.random()*5,r:Math.random()*6,vr:(Math.random()-.5)*.4,c:cols[i%4]});
+  var t=0;
+  (function f(){
+    x.clearRect(0,0,c.width,c.height);t++;
+    P.forEach(function(p){p.vy+=.35;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);x.restore();});
+    if(t<120)requestAnimationFrame(f);else x.clearRect(0,0,c.width,c.height);
+  })();
+}
+
+function render(){
+  var html="",cur="",ca=0,cb=0,both={},fire=false;
+  movies.forEach(function(m){
+    if(m.phase!==cur){ if(cur) html+="</table></div>"; cur=m.phase; html+="<h2>"+cur+"</h2><div class='wrap'><table>"; }
+    var s=done[m.id]||{a:false,b:false};
+    if(s.a)ca++; if(s.b)cb++;
+    if(s.a&&s.b){both[m.id]=true; if(ready&&!prevBoth[m.id])fire=true;}
+    html+="<tr class='"+(s.a&&s.b?"done":"")+"' data-id='"+m.id+"'><td class='c'><input type='checkbox' class='ka' data-k='a' "+(s.a?"checked":"")+"></td><td class='c'><input type='checkbox' class='kb' data-k='b' "+(s.b?"checked":"")+"></td><td class='t'></td><td class='y'>"+m.year+"</td></tr>";
+  });
+  html+="</table></div>";
+  $("list").innerHTML=html;
+  $("list").querySelectorAll("tr").forEach(function(r){
+    var id=r.getAttribute("data-id");
+    var m=movies.filter(function(x){return x.id===id;})[0];
+    r.querySelector(".t").textContent=m.n+". "+m.name;
+    r.querySelectorAll("input").forEach(function(c){
+      c.addEventListener("change",function(){toggle(id,c.getAttribute("data-k"));});
+    });
+  });
+  $("fa").style.width=Math.round(ca/total*100)+"%";
+  $("fb").style.width=Math.round(cb/total*100)+"%";
+  $("pa").textContent=ca+"/"+total;
+  $("pb").textContent=cb+"/"+total;
+  prevBoth=both;
+  if(fire)boom();
+}
+function toggle(id,k){
+  var s=done[id]||{a:false,b:false};
+  var n={a:s.a,b:s.b}; n[k]=!n[k]; done[id]=n; render();
+  if(fb){ fb.ref("marvel/marks/"+id).set(n).catch(function(){note("Não consegui salvar. Confira as regras do Firebase.");}); }
+}
+["na","nb"].forEach(function(i){
+  $(i).addEventListener("change",function(){
+    if(!fb) return;
+    fb.ref("marvel/names").set({a:$("na").value.trim()||"Pessoa 1",b:$("nb").value.trim()||"Pessoa 2"});
+  });
+});
+
+var target=new Date(2026,11,19,0,0,0).getTime();
+function tick(){
+  var d=target-Date.now();
+  if(d<=0){["d","h","m","s"].forEach(function(i){$(i).textContent="0";});$("cdn").textContent="É HOJE! Boa sessão ⚡";return;}
+  var p=function(n){return n<10?"0"+n:""+n;};
+  $("d").textContent=Math.floor(d/864e5);
+  $("h").textContent=p(Math.floor(d/36e5)%24);
+  $("m").textContent=p(Math.floor(d/6e4)%60);
+  $("s").textContent=p(Math.floor(d/1e3)%60);
+}
+tick();setInterval(tick,1000);
+
+render();
+if(firebaseConfig.apiKey==="COLE_AQUI"){
+  note("Falta colar a configuração do Firebase no arquivo. As marcações ainda não são compartilhadas.");
+  ready=true;
+}else{
+  try{
+    firebase.initializeApp(firebaseConfig);
+    fb=firebase.database();
+    setTimeout(function(){ready=true;},6000);
+    fb.ref("marvel/marks").on("value",function(snap){
+      var v=snap.val()||{},next={};
+      Object.keys(v).forEach(function(k){next[k]={a:!!v[k].a,b:!!v[k].b};});
+      done=next;render();ready=true;note("");
+    },function(){note("Erro ao sincronizar. Confira as regras do Firebase.");ready=true;});
+    fb.ref("marvel/names").on("value",function(snap){
+      var x=snap.val(); if(!x) return;
+      if(document.activeElement!==$("na")&&x.a) $("na").value=x.a;
+      if(document.activeElement!==$("nb")&&x.b) $("nb").value=x.b;
+    });
+  }catch(e){note("Erro ao conectar no Firebase. Confira a configuração colada.");ready=true;}
+}
+</script>
+</body>
+</html>
